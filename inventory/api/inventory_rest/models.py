@@ -8,17 +8,17 @@ class Manufacturer(models.Model):
     def get_api_url(self):
         return reverse("api_manufacturer", kwargs={"pk": self.id})
     
+    def __str__(self):
+        return self.name
+    
     class Meta:
         ordering = ["name"]
 
-    def __str__(self):
-        return self.name
 
 
 class VehicleModel(models.Model):
     name = models.CharField(max_length=100)
     picture_url = models.URLField(null=True, blank=True)
-
     manufacturer = models.ForeignKey(
         Manufacturer,
         related_name="models",
@@ -51,5 +51,6 @@ class Automobile(models.Model):
 
     def __str__(self):
         return self.model.name + " " + self.vin + " " + self.color
+    
     class Meta:
         ordering = ["model", "year", "color"]
