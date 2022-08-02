@@ -10,6 +10,7 @@ export default function InventoryList(props) {
   const [selectedModels, setSelectedModels] = useState([])
   const [f_models, setF_models] = useState([])
   const [f_automobiles, setF_automobiles] = useState([])
+  const [isChecked, setIsChecked] = useState([])
 
   const [formShow, setFormShow] = useState({})
 
