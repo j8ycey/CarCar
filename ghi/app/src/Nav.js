@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 
 function Nav() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-success">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/">CarCar</NavLink>
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,6 +10,18 @@ function Nav() {
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/inventory">Inventory</NavLink>
+            </li>
+            <li className='nav-item'>
+              <NavLink className="nav-link" to="/manufacturers/new">Add Manufacturer</NavLink>
+            </li>
+            <li className='nav-item'>
+              <NavLink className="nav-link" to="/models/new">Add Model</NavLink>
+            </li>
+            <li className='nav-item'>
+              <NavLink className="nav-link" to="/cars/new">Add Car</NavLink>
+            </li>
           </ul>
         </div>
       </div>
