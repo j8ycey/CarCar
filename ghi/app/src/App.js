@@ -11,11 +11,6 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/inventory" element={<InventoryList />} />
-          {/* <Route path="/manufacturers/new" element={<ManufacturerForm />} />
-          <Route path="/models" element={<Models />} />
-          <Route path="/models/new" element={<ModelForm />} />
-          <Route path="/cars" element={<Cars />} />
-          <Route path="/cars/new" element={<CarForm />} /> */}
         </Routes>
       </div>
     </BrowserRouter>
