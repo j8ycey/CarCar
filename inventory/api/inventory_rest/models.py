@@ -7,11 +7,14 @@ class Manufacturer(models.Model):
 
     def get_api_url(self):
         return reverse("api_manufacturer", kwargs={"pk": self.id})
+    
+    class Meta:
+        ordering = ["name"]
 
 
 class VehicleModel(models.Model):
     name = models.CharField(max_length=100)
-    picture_url = models.URLField()
+    picture_url = models.URLField(null=True, blank=True)
 
     manufacturer = models.ForeignKey(
         Manufacturer,
@@ -21,6 +24,9 @@ class VehicleModel(models.Model):
 
     def get_api_url(self):
         return reverse("api_vehicle_model", kwargs={"pk": self.id})
+
+    class Meta:
+        ordering = ["manufacturer", "name"]
 
 
 class Automobile(models.Model):
@@ -36,3 +42,6 @@ class Automobile(models.Model):
 
     def get_api_url(self):
         return reverse("api_automobile", kwargs={"vin": self.vin})
+
+    class Meta:
+        ordering = ["model", "year", "color"]
