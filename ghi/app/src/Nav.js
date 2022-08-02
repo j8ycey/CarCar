@@ -13,15 +13,21 @@ function Nav() {
             <li className="nav-item">
               <NavLink className="nav-link" to="/inventory">Inventory</NavLink>
             </li>
-            <li className='nav-item'>
-              <NavLink className="nav-link" to="/manufacturers/new">Add Manufacturer</NavLink>
+            {/* <li className="nav-item">
+              <NavLink className="nav-link" to="/manufacturers/new">New Manufacturer</NavLink>
             </li>
-            <li className='nav-item'>
-              <NavLink className="nav-link" to="/models/new">Add Model</NavLink>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/models">Models</NavLink>
             </li>
-            <li className='nav-item'>
-              <NavLink className="nav-link" to="/cars/new">Add Car</NavLink>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/models/new">New Model</NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/cars">Cars</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/cars/new">New Car</NavLink>
+            </li> */}
           </ul>
         </div>
       </div>

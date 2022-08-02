@@ -30,7 +30,12 @@ DEBUG = True
 # Application definition
 
 INSTALLED_APPS = [
+<<<<<<< HEAD
     'service_rest.apps.ServiceRestConfig',
+=======
+    'corsheaders',
+    'service_rest',
+>>>>>>> f58bba8af72e75ede959d328e63035367e366a50
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

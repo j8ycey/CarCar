@@ -7,6 +7,9 @@ Team:
 
 ## Design
 
+## Inventory micrservice
+We decided to create an inventory list page which houses the list of manufacturers, models and cars with inventory on one page because they are all part of the same bounded context. 
+
 ## Service microservice
 
 Explain your models and integration with the inventory

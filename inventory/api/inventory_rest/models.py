@@ -7,6 +7,9 @@ class Manufacturer(models.Model):
 
     def get_api_url(self):
         return reverse("api_manufacturer", kwargs={"pk": self.id})
+    
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -27,6 +30,9 @@ class VehicleModel(models.Model):
 
     def __str__(self):
         return self.manufacturer.name + " " + self.name
+    
+    class Meta:
+        ordering = ["manufacturer", "name"]
 
 
 class Automobile(models.Model):
@@ -45,3 +51,5 @@ class Automobile(models.Model):
 
     def __str__(self):
         return self.model.name + " " + self.vin + " " + self.color
+    class Meta:
+        ordering = ["model", "year", "color"]

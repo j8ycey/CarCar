@@ -1,46 +1,302 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { Modal } from 'react-bootstrap'
 
 export default function InventoryList(props) {
   const [manufacturers, setManufactures] = useState([])
   const [models, setModels] = useState([])
-  const [cars, setCars] = useState([])
+  const [automobiles, setAutomobiles] = useState([])
+
+  const [selectedManufacturers, setSelectedManufacturers] = useState([])
+  const [selectedModels, setSelectedModels] = useState([])
+  const [f_models, setF_models] = useState([])
+  const [f_automobiles, setF_automobiles] = useState([])
+
+  const [formShow, setFormShow] = useState({})
+
+  async function requestManufacturers() {
+    const manuResponse = await fetch('http://localhost:8100/api/manufacturers/')
+    if (manuResponse.ok) {
+      const data = await manuResponse.json()
+      setManufactures(data.manufacturers)
+    }
+  }
+
+  async function requestModels() {
+    const modelResponse = await fetch('http://localhost:8100/api/models/')
+    if (modelResponse.ok) {
+      const data = await modelResponse.json()
+      setModels(data.models)
+    }
+  }
+
+  async function requestCars() {
+    const carResponse = await fetch('http://localhost:8100/api/automobiles/')
+    if (carResponse.ok) {
+      const data = await carResponse.json()
+      setAutomobiles(data.autos)
+    }
+  }
 
   useEffect(() => {
-    (async () => {
-      const manuResponse = await fetch('http://localhost:8100/api/manufacturers/')
-      if (manuResponse.ok) {
-        const data = await manuResponse.json()
-        setManufactures(data.manufacturers)
-      }
-      const modelResponse = await fetch('http://localhost:8100/api/models/')
-      if (modelResponse.ok) {
-        const data = await modelResponse.json()
-        setModels(data.models)
-      }
-      const carResponse = await fetch('http://localhost:8100/api/automobiles/')
-      if (carResponse.ok) {
-        const data = await carResponse.json()
-        setCars(data.autos)
-      }
-    })()
+    requestManufacturers()
+    requestModels()
+    requestCars()
   }, [])
 
+  function ManufacturerForm(props) {
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        backdrop="static"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Add New Manufacturer
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form id="manufacturerForm" onSubmit={handleSubmit}>
+            <input type="hidden" name="type" value="manufacturers" />
+            <div className="form-floating mb-2">
+              <input type="text" className="form-control" name="name" placeholder="Manufacturer Name" />
+              <label htmlFor="name">Manufacturer Name</label>
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <button form="manufacturerForm" className="btn btn-primary">Create</button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  function ModelForm(props) {
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        backdrop="static"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Add New Model
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form id="modelForm" onSubmit={handleSubmit}>
+            <input type="hidden" name="type" value="models" />
+            <div className="mb-2">
+              <select required className="form-select" name="manufacturer_id">
+                <option value="">Choose a manufacturer</option>
+                {manufacturers.map(manufacturer => {
+                  return <option key={manufacturer.id} value={manufacturer.id}>{manufacturer.name}</option>
+                })}
+              </select>
+            </div>
+            <div className="form-floating mb-2">
+              <input type="text" className="form-control" name="name" placeholder="Model Name" />
+              <label htmlFor="name">Model Name</label>
+            </div>
+            <div className="form-floating mb-2">
+              <input type="text" className="form-control" name="picture_url" placeholder="Picture URL" />
+              <label htmlFor="picture_url">Picture URL</label>
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <button form="modelForm" className="btn btn-primary">Create</button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  function CarForm(props) {
+    const [carFormModels, setCarFormModels] = useState([])
+
+    function handleCarFormManufacturer(event) {
+      const filteredModels = [...models].filter(model => model.manufacturer.id === parseInt(event.target.value))
+      setCarFormModels(filteredModels)
+    }
+
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        backdrop="static"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Add New Car
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form id="carForm" onSubmit={handleSubmit}>
+            <input type="hidden" name="type" value="automobiles" />
+            <div className="mb-2">
+              <select required className="form-select" name="manufacturer_id" onChange={handleCarFormManufacturer}>
+                <option value="">Choose a manufacturer</option>
+                {manufacturers.map(manufacturer => {
+                  return <option key={manufacturer.id} value={manufacturer.id}>{manufacturer.name}</option>
+                })}
+              </select>
+            </div>
+            <div className="mb-2">
+              <select required className="form-select" name="model_id">
+                <option value="">Choose a model</option>
+                {carFormModels.map(model => {
+                  return <option key={model.id} value={model.id}>{model.name}</option>
+                })}
+              </select>
+            </div>
+            <div className="form-floating mb-2">
+              <input type="text" className="form-control" name="color" placeholder="Color" />
+              <label htmlFor="color">Color</label>
+            </div>
+            <div className="form-floating mb-2">
+              <input type="number" className="form-control" name="year" placeholder="Year" min="1900" max="2100" />
+              <label htmlFor="year">Year</label>
+            </div>
+            <div className="form-floating mb-2">
+              <input type="text" className="form-control" name="vin" placeholder="VIN no." />
+              <label htmlFor="vin">VIN no.</label>
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <button form="carForm" className="btn btn-primary">Create</button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault()
+    const form = event.target
+    const type = form.type.value
+    let data = {}
+    if (type === "manufacturers") {
+      data = {
+        name: event.target.name.value
+      }
+    }
+    else if (type === "models") {
+      data = {
+        name: form.name.value,
+        picture_url: form.picture_url.value,
+        manufacturer_id: form.manufacturer_id.value
+      }
+    }
+    else {
+      data = {
+        model_id: form.model_id.value,
+        color: form.color.value,
+        year: form.year.value,
+        vin: form.vin.value
+      }
+    }
+    const url = `http://localhost:8100/api/${type}/`
+    const fetchConfig = {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }
+    const response = await fetch(url, fetchConfig)
+    if (response.ok) {
+      setFormShow({ ...formShow, [type]: false })
+
+      if (type === "manufacturers") {
+        requestManufacturers()
+      }
+      else if (type === "models") {
+        requestModels()
+      }
+      else {
+        requestCars()
+      }
+    }
+  }
+
+  function handleSelectManufacturer(event) {
+    const manufacturerId = parseInt(event.target.value)
+    const updatedFilters = [...selectedManufacturers]
+    if (updatedFilters.includes(manufacturerId)) {
+      const idx = updatedFilters.indexOf(manufacturerId)
+      updatedFilters.splice(idx, 1)
+    }
+    else {
+      updatedFilters.push(manufacturerId)
+    }
+    setSelectedManufacturers(updatedFilters)
+  }
+
+  function handleSelectModel(event) {
+    const modelId = parseInt(event.target.value)
+    const updatedFilters = [...selectedModels]
+    if (updatedFilters.includes(modelId)) {
+      const idx = updatedFilters.indexOf(modelId)
+      updatedFilters.splice(idx, 1)
+    }
+    else {
+      updatedFilters.push(modelId)
+    }
+    setSelectedModels(updatedFilters)
+  }
+
+  function filterModels() {
+    if (selectedManufacturers.length < 1) {
+      setF_models(models)
+    } else {
+      setF_models(models.filter(model => selectedManufacturers.includes(model.manufacturer.id)))
+    }
+  }
+
+  function filterAutomobiles() {
+    if (selectedModels.length < 1) {
+      if (selectedManufacturers.length < 1) {
+        setF_automobiles(automobiles)
+      } else {
+        setF_automobiles(automobiles.filter(car => selectedManufacturers.includes(car.model.manufacturer.id)))
+      }
+    } else {
+      setF_automobiles(automobiles.filter(car => selectedModels.includes(car.model.id)))
+    }
+  }
+
+  useEffect(filterModels, [selectedManufacturers, models])
+  useEffect(filterAutomobiles, [selectedManufacturers, selectedModels, automobiles])
+
   return (
-    <div className="container text-center">
+    <div className="container">
       <div className="row mt-5">
         <div className="col-2">
-          <h4>Manufacturers</h4>
+          <h4 align="center">Manufacturers</h4>
+          <div style={{ textAlign: "right" }}>
+            <button onClick={() => setFormShow({ ...formShow, manufacturers: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
+          </div>
           <table className="table table-striped">
             <thead>
               <tr>
+                <th style={{ width: 10 }}>fil.</th>
                 <th>Brands</th>
+                <th style={{ width: 10 }}>edit</th>
               </tr>
             </thead>
             <tbody>
               {manufacturers.map(manufacturer => {
                 return (
                   <tr key={manufacturer.id}>
+                    <td><input className="form-check-input" type="checkbox" value={manufacturer.id} onChange={handleSelectManufacturer} /></td>
                     <td>{manufacturer.name}</td>
+                    <td>X</td>
                   </tr>
                 );
               })}
@@ -48,22 +304,29 @@ export default function InventoryList(props) {
           </table>
         </div>
         <div className="col-5">
-          <h4>Models</h4>
+          <h4 align="center">Models</h4>
+          <div style={{ textAlign: "right" }}>
+            <button onClick={() => setFormShow({ ...formShow, models: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
+          </div>
           <table className="table table-striped">
             <thead>
               <tr>
+                <th style={{ width: 10 }}>fil.</th>
                 <th>Manufacturer</th>
                 <th>Model Name</th>
                 <th>Image</th>
+                <th style={{ width: 10 }}>edit</th>
               </tr>
             </thead>
             <tbody>
-              {models.map(model => {
+              {f_models.map(model => {
                 return (
                   <tr key={model.id}>
+                    <td><input className="form-check-input" type="checkbox" value={model.id} onChange={handleSelectModel} /></td>
                     <td>{model.manufacturer.name}</td>
                     <td>{model.name}</td>
-                    <td><img src={model.picture_url} alt={model.name} width="150" /></td>
+                    <td><img src={model.picture_url} alt={model.name} /></td>
+                    <td>X</td>
                   </tr>
                 );
               })}
@@ -71,19 +334,23 @@ export default function InventoryList(props) {
           </table>
         </div>
         <div className="col-5">
-          <h4>Cars</h4>
+          <h4 align="center">Cars</h4>
+          <div style={{ textAlign: "right" }}>
+            <button onClick={() => setFormShow({ ...formShow, automobiles: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
+          </div>
           <table className="table table-striped">
             <thead>
               <tr>
-                <th>Manufacturer</th>
+                <th>Manu.</th>
                 <th>Model</th>
                 <th>Color</th>
                 <th>Year</th>
                 <th>VIN</th>
+                <th style={{ width: 10 }}>edit</th>
               </tr>
             </thead>
             <tbody>
-              {cars.map(car => {
+              {f_automobiles.map(car => {
                 return (
                   <tr key={car.id}>
                     <td>{car.model.manufacturer.name}</td>
@@ -91,6 +358,7 @@ export default function InventoryList(props) {
                     <td>{car.color}</td>
                     <td>{car.year}</td>
                     <td>{car.vin}</td>
+                    <td>X</td>
                   </tr>
                 );
               })}
@@ -98,7 +366,18 @@ export default function InventoryList(props) {
           </table>
         </div>
       </div>
+      <ManufacturerForm
+        show={formShow.manufacturers}
+        onHide={() => setFormShow({ ...formShow, manufacturers: false })}
+      />
+      <ModelForm
+        show={formShow.models}
+        onHide={() => setFormShow({ ...formShow, models: false })}
+      />
+      <CarForm
+        show={formShow.automobiles}
+        onHide={() => setFormShow({ ...formShow, automobiles: false })}
+      />
     </div>
   )
 }
-

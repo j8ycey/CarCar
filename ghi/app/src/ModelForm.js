@@ -72,7 +72,7 @@ class modelForm extends React.Component {
                   <label htmlFor="picture_url">Picture URL</label>
                 </div>
                 <div className="mb-3">
-                <select onChange={this.handleChange} value={this.state.manufacturer} name="manufacturer" required id="manufacturer" className="form-select">
+                <select onChange={this.handleChange} value={this.state.manufacturer_id} name="manufacturer_id" required id="manufacturer_id" className="form-select">
                   <option value="">Manufacturer</option>
                   {this.state.manufacturers.map(manufacturer => {
                     return <option key={manufacturer.id} value={manufacturer.id}>{manufacturer.name}</option>
