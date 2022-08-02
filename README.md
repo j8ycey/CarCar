@@ -56,7 +56,8 @@ microservice, here.
   - Create technician form
   - Service appointment form
   - List of appointments
-  - List of past service appointments by VIN search
+  - List of past service appointments filterable by VIN
+
 
 ------------------------------------------------------------------------------------------------------------
 
@@ -81,6 +82,7 @@ microservice, here.
   - price of the sale
 - List of specific sales person's sales history via drop down. List should show:
   - sales person, customer, VIN, price of the sale
+- When an automobile is purchased, remove it from inventory
 
 - Create navbar links:
   - Create salesperson form
