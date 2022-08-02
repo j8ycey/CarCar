@@ -10,6 +10,7 @@ export default function InventoryList(props) {
   const [selectedModels, setSelectedModels] = useState([])
   const [f_models, setF_models] = useState([])
   const [f_automobiles, setF_automobiles] = useState([])
+  const [isChecked, setIsChecked] = useState([])
 
   const [formShow, setFormShow] = useState({})
 
@@ -325,7 +326,7 @@ export default function InventoryList(props) {
                     <td><input className="form-check-input" type="checkbox" value={model.id} onChange={handleSelectModel} /></td>
                     <td>{model.manufacturer.name}</td>
                     <td>{model.name}</td>
-                    <td><img src={model.picture_url} alt={model.name} /></td>
+                    <td><img src={model.picture_url} alt={model.name} width="150" /></td>
                     <td>X</td>
                   </tr>
                 );
@@ -341,7 +342,7 @@ export default function InventoryList(props) {
           <table className="table table-striped">
             <thead>
               <tr>
-                <th>Manu.</th>
+                <th>Manufacturer</th>
                 <th>Model</th>
                 <th>Color</th>
                 <th>Year</th>
