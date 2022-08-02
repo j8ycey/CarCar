@@ -48,7 +48,7 @@ class ManufacturerForm extends React.Component {
         <div className="row">
           <div className="offset-3 col-6">
             <div className="shadow p-4 mt-4">
-              <h1>Create a new manufacturer</h1>
+              <h1>Add Manufacturer</h1>
               <form onSubmit={this.handleSubmit}>
                 <div className="form-floating mb-3">
                   <input placeholder="Name" type="text" className="form-control" id="namer" name="name" value={this.state.name} onChange={this.handleChange} />
