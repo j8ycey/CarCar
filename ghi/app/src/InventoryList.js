@@ -29,7 +29,7 @@ export default function InventoryList(props) {
     <div className="container text-center">
       <div className="row mt-5">
         <div className="col-2">
-          <h3>Manufacturers</h3>
+          <h4>Manufacturers</h4>
           <table className="table table-striped">
             <thead>
               <tr>
@@ -48,7 +48,7 @@ export default function InventoryList(props) {
           </table>
         </div>
         <div className="col-5">
-          <h3>Models</h3>
+          <h4>Models</h4>
           <table className="table table-striped">
             <thead>
               <tr>
@@ -71,11 +71,11 @@ export default function InventoryList(props) {
           </table>
         </div>
         <div className="col-5">
-          <h3>Cars</h3>
+          <h4>Cars</h4>
           <table className="table table-striped">
             <thead>
               <tr>
-                <th>Manu.</th>
+                <th>Manufacturer</th>
                 <th>Model</th>
                 <th>Color</th>
                 <th>Year</th>
