@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal } from 'react-bootstrap'
 
 export default function InventoryList(props) {
@@ -10,7 +10,6 @@ export default function InventoryList(props) {
   const [selectedModels, setSelectedModels] = useState([])
   const [f_models, setF_models] = useState([])
   const [f_automobiles, setF_automobiles] = useState([])
-  const [isChecked, setIsChecked] = useState([])
 
   const [formShow, setFormShow] = useState({})
 

@@ -41,7 +41,7 @@ def list_create_technicians(request):
         )
     elif request.method == "POST":
         data = json.loads(request.body)
-        technician = Technician.objects.create(data)
+        technician = Technician.objects.create(**data)
         return JsonResponse(
             {"technicians": technician},
             encoder=TechnicianEncoder,
@@ -66,7 +66,7 @@ def list_create_appointments(request):
     elif request.method == "POST":
         data = json.loads(request.body)
         try:
-            technician = Technician.objects.get(employee_id=data["employee_id"])
+            technician = Technician.objects.get(employee_id=data["technician"])
             data["technician"] = technician
             appointment = ServiceAppointment.objects.create(**data)
             return JsonResponse(

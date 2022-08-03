@@ -3,6 +3,7 @@ import React, { useState, useEffect} from 'react'
 export default function AppointmentList(props) {
 const [filteredAppointments, setFilteredAppointments] = useState([])
 const [allAppointments, setAllAppointments] = useState([])
+const [search, setSearch] = useState('')
 
 async function requestAppointments() {
   const response = await fetch('http://localhost:8080/api/appointments/')
@@ -16,14 +17,21 @@ async function requestAppointments() {
 useEffect(() => {requestAppointments()}, [])
 
 async function handleChange(event) {
-  const search = event.target.value
+  setSearch(event.target.value)
+}
+
+useEffect(() => {
   const filteredAppointments = allAppointments.filter(appointment => appointment.vin.toLowerCase().includes(search.toLowerCase()))
   setFilteredAppointments(filteredAppointments)
-}
+}, [search])
 
   return (
     <>
-      <div className="mb-3">
+      <div className="row">
+        <div className=".col-xs-6 .col-sm-3">
+          <div className="shadow p-4 mt-4">
+          <div className="mb-3">
+            <h1 align="center">Appointment List</h1>
           <input
             type="search"
             id="search"
@@ -60,6 +68,9 @@ async function handleChange(event) {
             ))}
           </tbody>
         </table>
+        </div>
+        </div>
+      </div>
     </>
   )
 }

@@ -4,20 +4,36 @@ import { useNavigate } from 'react-router-dom'
 
 export default function AppointmentForm(props) {
   const navigate = useNavigate()
-  const [appointment, setAppointment] = useState({})
   const [technicians, setTechnicians] = useState([])
+
+  async function requestTechnicians() {
+    const response = await fetch('http://localhost:8080/api/technicians/')
+    if (response.ok) {
+      const data = await response.json()
+      setTechnicians(data.technicians)
+    }
+  }
+
+  useEffect(() => {requestTechnicians() }, [])
 
   async function handleSubmit(event) {
     event.preventDefault()
-    const data = [...appointment]
+    const data = {
+      vin: event.target.vin.value,
+      customer: event.target.customer.value,
+      appointment_time: event.target.appointment_time.value,
+      reason: event.target.reason.value,
+      technician: event.target.technician.value,
+    }
     console.log(data)
   
     const url = 'http://localhost:8080/api/appointments/'
     const fetchConfig = {
         method: 'POST',
+        body: JSON.stringify(data),
         headers: {
-        'Content-Type': 'application/json'
-      },
+            'Content-Type': 'application/json'
+        },
     }
     const response = await fetch(url, fetchConfig)
     if (response.ok) {
@@ -89,7 +105,7 @@ export default function AppointmentForm(props) {
                   id='technician'
                   className="form-select">
                   <option value="">Choose a technician</option>
-                  {technicians.map(technician => <option key={technician.id} value={technician.id}>{technician.name}</option>)}
+                  {technicians.map(technician => <option key={technician.employee_id} value={technician.employee_id}>{technician.name}</option>)}
                 </select>
                 <label htmlFor="technician" className="form-floating-label">Technician</label>
               </div>

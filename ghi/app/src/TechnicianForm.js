@@ -2,18 +2,22 @@ import React, { useState, useEffect} from 'react'
 
 
 export default function TechnicianForm(props) {
-const [technician, setTechnician] = useState({})
 
   async function handleSubmit(event) {
     event.preventDefault()
-    const data = [...technician]
+    const data = {
+      name: event.target.name.value,
+      employee_id: event.target.employee_id.value,
+    }
     console.log(data)
+    
     const url = 'http://localhost:8080/api/technicians/'
     const fetchConfig = {
         method: 'POST',
+        body: JSON.stringify(data),
         headers: {
-        'Content-Type': 'application/json'
-      },
+            'Content-Type': 'application/json',
+        },
     }
     const response = await fetch(url, fetchConfig)
     if (response.ok) {
