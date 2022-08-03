@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Modal } from 'react-bootstrap'
 
 export default function InventoryList(props) {
@@ -76,7 +76,7 @@ export default function InventoryList(props) {
           <button form="manufacturerForm" className="btn btn-primary">{!!props.updating ? "Update" : "Create"}</button>
         </Modal.Footer>
       </Modal>
-    )
+    );
   }
 
   function ModelForm(props) {

@@ -42,7 +42,6 @@ class Automobile(models.Model):
     color = models.CharField(max_length=50)
     year = models.PositiveSmallIntegerField()
     vin = models.CharField(max_length=17, unique=True)
-    sold = models.BooleanField(default=False)
     model = models.ForeignKey(
         VehicleModel,
         related_name="automobiles",
