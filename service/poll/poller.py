@@ -15,13 +15,14 @@ django.setup()
 from service_rest.models import AutomobileVO
 
 def get_automobiles():
-    url = "http://localhost:8100/api/automobiles/"
+    url = "http://inventory-api:8000/api/automobiles/"
     response = requests.get(url)
     content = json.loads(response.content)
-    for automobile in content["automobiles"]:
+    for automobile in content["autos"]:
         AutomobileVO.objects.update_or_create(
-            vin = automobile["vin"],
+            vin = automobile["vin"]
         )
+    
 
 
 def poll():
@@ -29,6 +30,7 @@ def poll():
         print('Service poller polling for data')
         try:
             get_automobiles()
+            print('Service poller got data')
         except Exception as e:
             print(e, file=sys.stderr)
         time.sleep(60)

@@ -5,6 +5,9 @@ import json
 from common.json import ModelEncoder
 from .models import AutomobileVO, Technician, ServiceAppointment
 
+class AutomobileVOEncoder(ModelEncoder):
+    model = AutomobileVO
+    properties = ["vin"]
 
 class TechnicianEncoder(ModelEncoder):
     model = Technician
@@ -13,12 +16,22 @@ class TechnicianEncoder(ModelEncoder):
 
 class ServiceAppointmentEncoder(ModelEncoder):
     model = ServiceAppointment
-    properties = ["vin", "customer", "vip", "appointment_time", "reason", "completed"]
+    properties = ["id", "vin", "customer", "vip", "appointment_time", "reason", "completed", "technician"]
     encoders = {"technician": TechnicianEncoder()}
 
 
+@require_http_methods(["GET"])
+def list_vos(request):
+    vos = AutomobileVO.objects.all()
+    return JsonResponse(
+        {"automobiles": vos},
+        encoder=AutomobileVOEncoder,
+        safe=False,
+    )
+
+
 @require_http_methods(["GET", "POST"])
-def list_technicians(request):
+def list_create_technicians(request):
     if request.method == "GET":
         technicians = Technician.objects.all()
         return JsonResponse(
@@ -37,12 +50,14 @@ def list_technicians(request):
 
 
 @require_http_methods(["GET", "POST"])
-def list_appointments(request):
+def list_create_appointments(request):
     if request.method == "GET":
         appointments = ServiceAppointment.objects.all()
         for appointment in appointments:
             if appointment.vin in AutomobileVO.objects.values_list("vin", flat=True):
-                appointment["vip"] = True
+                appointment.vip = True
+            else:
+                appointment.vip = False
         return JsonResponse(
             {"appointments": appointments},
             encoder=ServiceAppointmentEncoder,

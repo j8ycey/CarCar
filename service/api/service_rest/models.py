@@ -11,6 +11,7 @@ class AutomobileVO(models.Model):
 
     def __str__(self):
         return self.vin
+        
 
 
 class Technician(models.Model):
@@ -22,6 +23,12 @@ class Technician(models.Model):
         return reverse("api_technician", kwargs={"pk": self.id})
     class Meta:
         ordering = ["name"]
+
+    def get_api_url(self):
+        return reverse("api_appointment", kwargs={"pk": self.id})
+    
+    def __str__(self):
+        return self.name + " - " + str(self.employee_id)
 
 
 class ServiceAppointment(models.Model):
@@ -36,3 +43,9 @@ class ServiceAppointment(models.Model):
         related_name="appointments",
         on_delete=models.PROTECT,
     )
+
+    def get_api_url(self):
+        return reverse("api_appointment", kwargs={"pk": self.id})
+
+    def __str__(self):
+        return self.vin + " - " + self.customer + " - " + self.reason
