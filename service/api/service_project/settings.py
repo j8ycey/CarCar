@@ -52,10 +52,14 @@ MIDDLEWARE = [
 
 ALLOWED_HOSTS = [
     "localhost",
+    "service-poller",
+    "service-api",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:8100",
+    "http://localhost:8090",
 ]
 
 CORS_ALLOWED_ORIGINS = [
