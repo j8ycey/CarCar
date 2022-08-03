@@ -286,9 +286,9 @@ export default function InventoryList(props) {
           <table className="table table-striped">
             <thead>
               <tr>
-                <th style={{ width: 10 }}>fil.</th>
+                <th style={{ width: 10 }}>Filter</th>
                 <th>Brands</th>
-                <th style={{ width: 10 }}>edit</th>
+                <th style={{ width: 10 }}>Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -297,7 +297,7 @@ export default function InventoryList(props) {
                   <tr key={manufacturer.id}>
                     <td><input className="form-check-input" type="checkbox" value={manufacturer.id} onChange={handleSelectManufacturer} /></td>
                     <td>{manufacturer.name}</td>
-                    <td>X</td>
+                    <td>button</td>
                   </tr>
                 );
               })}
@@ -312,11 +312,11 @@ export default function InventoryList(props) {
           <table className="table table-striped">
             <thead>
               <tr>
-                <th style={{ width: 10 }}>fil.</th>
+                <th style={{ width: 10 }}>Filter</th>
                 <th>Manufacturer</th>
-                <th>Model Name</th>
+                <th>Model</th>
                 <th>Image</th>
-                <th style={{ width: 10 }}>edit</th>
+                <th style={{ width: 10 }}>Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -327,7 +327,7 @@ export default function InventoryList(props) {
                     <td>{model.manufacturer.name}</td>
                     <td>{model.name}</td>
                     <td><img src={model.picture_url} alt={model.name} width="150" /></td>
-                    <td>X</td>
+                    <td>button</td>
                   </tr>
                 );
               })}
@@ -347,7 +347,7 @@ export default function InventoryList(props) {
                 <th>Color</th>
                 <th>Year</th>
                 <th>VIN</th>
-                <th style={{ width: 10 }}>edit</th>
+                <th style={{ width: 10 }}>Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -359,7 +359,7 @@ export default function InventoryList(props) {
                     <td>{car.color}</td>
                     <td>{car.year}</td>
                     <td>{car.vin}</td>
-                    <td>X</td>
+                    <td>button</td>
                   </tr>
                 );
               })}
