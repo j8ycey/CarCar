@@ -353,16 +353,15 @@ export default function InventoryList(props) {
       <div className="row mt-5 shadow-lg mb-3 pt-4 px-3">
         <h1 align="center">Inventory</h1>
         <div className="col-2">
-          <div style={{ textAlign: "right" }}>
-            <button onClick={() => setFormShow({ manufacturers: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
-          </div>
           <div className="table-responsive">
-            <table className="table table-striped">
+            <table className="table">
               <thead>
                 <tr>
                   <th style={{ width: 10 }}></th>
                   <th>Manufacturers</th>
-                  <th style={{ width: 10 }}></th>
+                  <th style={{ width: 10 }}>
+                    <img onClick={() => setFormShow({ manufacturers: true })} src="/plus-circle.svg" alt="create" style={{ cursor: 'pointer' }} />
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -382,18 +381,17 @@ export default function InventoryList(props) {
           </div>
         </div>
         <div className="col-5">
-          <div style={{ textAlign: "right" }}>
-            <button onClick={() => setFormShow({ models: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
-          </div>
           <div className="table-responsive">
-            <table className="table table-striped">
+            <table className="table">
               <thead>
                 <tr>
                   <th style={{ width: 10 }}></th>
                   <th>Manufacturer</th>
                   <th>Model</th>
                   <th>Image</th>
-                  <th style={{ width: 10 }}></th>
+                  <th style={{ width: 10 }}>
+                    <img onClick={() => setFormShow({ models: true })} src="/plus-circle.svg" alt="create" style={{ cursor: 'pointer' }} />
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -415,11 +413,8 @@ export default function InventoryList(props) {
           </div>
         </div>
         <div className="col-5">
-          <div style={{ textAlign: "right" }}>
-            <button onClick={() => setFormShow({ automobiles: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
-          </div>
           <div className="table-responsive">
-            <table className="table table-striped">
+            <table className="table">
               <thead>
                 <tr>
                   <th>Manufacturer</th>
@@ -427,7 +422,9 @@ export default function InventoryList(props) {
                   <th>Color</th>
                   <th>Year</th>
                   <th>VIN</th>
-                  <th style={{ width: 10 }}></th>
+                  <th style={{ width: 10 }}>
+                    <img onClick={() => setFormShow({ automobiles: true })} src="/plus-circle.svg" alt="create" style={{ cursor: 'pointer' }} />
+                  </th>
                 </tr>
               </thead>
               <tbody>
