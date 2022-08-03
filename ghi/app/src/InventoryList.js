@@ -10,8 +10,12 @@ export default function InventoryList(props) {
   const [selectedModels, setSelectedModels] = useState([])
   const [f_models, setF_models] = useState([])
   const [f_automobiles, setF_automobiles] = useState([])
+  const [modelIsChecked, setModelIsChecked] = useState({})
 
   const [formShow, setFormShow] = useState({})
+  const [manuUpdating, setManuUpdating] = useState(false)
+  const [modelUpdating, setModelUpdating] = useState(false)
+  const [carUpdating, setCarUpdating] = useState(false)
 
   async function requestManufacturers() {
     const manuResponse = await fetch('http://localhost:8100/api/manufacturers/')
@@ -54,20 +58,22 @@ export default function InventoryList(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Add New Manufacturer
+            {!!props.updating ? "Update " : "Add New "} Manufacturer
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form id="manufacturerForm" onSubmit={handleSubmit}>
             <input type="hidden" name="type" value="manufacturers" />
+            <input type="hidden" name="edit" value={props.updating.id} />
             <div className="form-floating mb-2">
-              <input type="text" className="form-control" name="name" placeholder="Manufacturer Name" />
+              <input type="text" className="form-control" name="name" placeholder="Manufacturer Name" defaultValue={props.updating.name} />
               <label htmlFor="name">Manufacturer Name</label>
             </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <button form="manufacturerForm" className="btn btn-primary">Create</button>
+          <button form="manufacturerForm" onClick={() => {handleDelete("manufacturers", props.updating.id)}} className={"btn btn-danger" + (!!props.updating ? "" : " d-none")}>Delete</button>
+          <button form="manufacturerForm" className="btn btn-primary">{!!props.updating ? "Update" : "Create"}</button>
         </Modal.Footer>
       </Modal>
     )
@@ -84,14 +90,15 @@ export default function InventoryList(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Add New Model
+          {!!props.updating ? "Update " : "Add New "} Model
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form id="modelForm" onSubmit={handleSubmit}>
             <input type="hidden" name="type" value="models" />
+            <input type="hidden" name="edit" value={props.updating.id} />
             <div className="mb-2">
-              <select required className="form-select" name="manufacturer_id">
+              <select required className="form-select" name="manufacturer_id" defaultValue={!!props.updating ? props.updating.manufacturer.id : ""}>
                 <option value="">Choose a manufacturer</option>
                 {manufacturers.map(manufacturer => {
                   return <option key={manufacturer.id} value={manufacturer.id}>{manufacturer.name}</option>
@@ -99,28 +106,37 @@ export default function InventoryList(props) {
               </select>
             </div>
             <div className="form-floating mb-2">
-              <input type="text" className="form-control" name="name" placeholder="Model Name" />
+              <input type="text" className="form-control" name="name" placeholder="Model Name" defaultValue={props.updating.name} />
               <label htmlFor="name">Model Name</label>
             </div>
             <div className="form-floating mb-2">
-              <input type="text" className="form-control" name="picture_url" placeholder="Picture URL" />
+              <input type="text" className="form-control" name="picture_url" placeholder="Picture URL" defaultValue={props.updating.picture_url} />
               <label htmlFor="picture_url">Picture URL</label>
             </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <button form="modelForm" className="btn btn-primary">Create</button>
+          <button form="modelForm" onClick={() => {handleDelete("models", props.updating.id)}} className={"btn btn-danger" + (!!props.updating ? "" : " d-none")}>Delete</button>
+          <button form="modelForm" className="btn btn-primary">{!!props.updating ? "Update" : "Create"}</button>
         </Modal.Footer>
       </Modal>
     );
   }
 
   function CarForm(props) {
+    let initial = []
+    if (!!props.updating) {
+      initial = [...models].filter(model => model.manufacturer.id === props.updating.model.manufacturer.id)
+    } else {
+      initial = []
+    }
+    const [firstRun, setFirstRun] = useState(true)
     const [carFormModels, setCarFormModels] = useState([])
 
     function handleCarFormManufacturer(event) {
       const filteredModels = [...models].filter(model => model.manufacturer.id === parseInt(event.target.value))
       setCarFormModels(filteredModels)
+      setFirstRun(false)
     }
 
     return (
@@ -133,14 +149,15 @@ export default function InventoryList(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Add New Car
+            {!!props.updating ? "Update " : "Add New "} Car
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form id="carForm" onSubmit={handleSubmit}>
             <input type="hidden" name="type" value="automobiles" />
+            <input type="hidden" name="edit" value={props.updating.vin} />
             <div className="mb-2">
-              <select required className="form-select" name="manufacturer_id" onChange={handleCarFormManufacturer}>
+              <select required className="form-select" name="manufacturer_id" onChange={handleCarFormManufacturer} defaultValue={!!props.updating ? props.updating.model.manufacturer.id : ""}>
                 <option value="">Choose a manufacturer</option>
                 {manufacturers.map(manufacturer => {
                   return <option key={manufacturer.id} value={manufacturer.id}>{manufacturer.name}</option>
@@ -148,29 +165,30 @@ export default function InventoryList(props) {
               </select>
             </div>
             <div className="mb-2">
-              <select required className="form-select" name="model_id">
+              <select required className="form-select" name="model_id" defaultValue={!!props.updating ? props.updating.model.id : ""}>
                 <option value="">Choose a model</option>
-                {carFormModels.map(model => {
+                {(firstRun ? initial : carFormModels).map(model => {
                   return <option key={model.id} value={model.id}>{model.name}</option>
                 })}
               </select>
             </div>
             <div className="form-floating mb-2">
-              <input type="text" className="form-control" name="color" placeholder="Color" />
+              <input type="text" className="form-control" name="color" placeholder="Color" defaultValue={!!props.updating ? props.updating.color : ""} />
               <label htmlFor="color">Color</label>
             </div>
             <div className="form-floating mb-2">
-              <input type="number" className="form-control" name="year" placeholder="Year" min="1900" max="2100" />
+              <input type="number" className="form-control" name="year" placeholder="Year" min="1900" max="2100" defaultValue={!!props.updating ? props.updating.year : ""} />
               <label htmlFor="year">Year</label>
             </div>
             <div className="form-floating mb-2">
-              <input type="text" className="form-control" name="vin" placeholder="VIN no." />
+              <input type="text" className="form-control" name="vin" placeholder="VIN no." defaultValue={!!props.updating ? props.updating.vin : ""} />
               <label htmlFor="vin">VIN no.</label>
             </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <button form="carForm" className="btn btn-primary">Create</button>
+          <button form="carForm" onClick={() => {handleDelete("automobiles", props.updating.vin)}} className={"btn btn-danger" + (!!props.updating ? "" : " d-none")}>Delete</button>
+          <button form="carForm" className="btn btn-primary">{!!props.updating ? "Update" : "Create"}</button>
         </Modal.Footer>
       </Modal>
     );
@@ -180,6 +198,7 @@ export default function InventoryList(props) {
     event.preventDefault()
     const form = event.target
     const type = form.type.value
+    const editId = form.edit.value
     let data = {}
     if (type === "manufacturers") {
       data = {
@@ -201,9 +220,9 @@ export default function InventoryList(props) {
         vin: form.vin.value
       }
     }
-    const url = `http://localhost:8100/api/${type}/`
+    const url = `http://localhost:8100/api/${type}/${!!editId?editId+'/':""}`
     const fetchConfig = {
-      method: 'POST',
+      method: !!editId ? 'PUT' : 'POST',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
@@ -211,7 +230,10 @@ export default function InventoryList(props) {
     }
     const response = await fetch(url, fetchConfig)
     if (response.ok) {
-      setFormShow({ ...formShow, [type]: false })
+      setFormShow({ [type]: false })
+      setManuUpdating(false)
+      setModelUpdating(false)
+      setCarUpdating(false)
 
       if (type === "manufacturers") {
         requestManufacturers()
@@ -224,6 +246,47 @@ export default function InventoryList(props) {
       }
     }
   }
+
+  async function handleDelete(type, id) {
+    const url = `http://localhost:8100/api/${type}/${id}/`
+    const fetchConfig = {method: 'DELETE'}
+    const response = await fetch(url, fetchConfig)
+    if (response.ok) {
+      setFormShow({ [type]: false })
+      setManuUpdating(false)
+      setModelUpdating(false)
+      setCarUpdating(false)
+      console.log(response)
+
+      if (type === "manufacturers") {
+        requestManufacturers()
+      }
+      else if (type === "models") {
+        requestModels()
+      }
+      else {
+        requestCars()
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (!!manuUpdating) {
+      setFormShow({ manufacturers: true })
+    }
+  }, [manuUpdating])
+
+  useEffect(() => {
+    if (!!modelUpdating) {
+      setFormShow({ models: true })
+    }
+  }, [modelUpdating])
+
+  useEffect(() => {
+    if (!!carUpdating) {
+      setFormShow({ automobiles: true })
+    }
+  }, [carUpdating])
 
   function handleSelectManufacturer(event) {
     const manufacturerId = parseInt(event.target.value)
@@ -240,6 +303,7 @@ export default function InventoryList(props) {
 
   function handleSelectModel(event) {
     const modelId = parseInt(event.target.value)
+    setModelIsChecked({ ...modelIsChecked, [modelId]: !modelIsChecked[modelId] })
     const updatedFilters = [...selectedModels]
     if (updatedFilters.includes(modelId)) {
       const idx = updatedFilters.indexOf(modelId)
@@ -256,6 +320,15 @@ export default function InventoryList(props) {
       setF_models(models)
     } else {
       setF_models(models.filter(model => selectedManufacturers.includes(model.manufacturer.id)))
+      const notDisplayed = models.filter(model => !selectedManufacturers.includes(model.manufacturer.id))
+      const clearChecks = { ...modelIsChecked }
+      let clearUnselectedModels = [...selectedModels]
+      notDisplayed.map(model => {
+        clearChecks[model.id] = false
+        clearUnselectedModels = clearUnselectedModels.filter(id => id !== model.id)
+      })
+      setModelIsChecked(clearChecks)
+      setSelectedModels(clearUnselectedModels)
     }
   }
 
@@ -272,112 +345,136 @@ export default function InventoryList(props) {
   }
 
   useEffect(filterModels, [selectedManufacturers, models])
-  useEffect(filterAutomobiles, [selectedManufacturers, selectedModels, automobiles])
+  useEffect(filterAutomobiles, [selectedManufacturers, modelIsChecked, automobiles])
 
   return (
-    <div className="container">
+    <>
       <div className="row mt-5">
         <div className="col-2">
           <h4 align="center">Manufacturers</h4>
           <div style={{ textAlign: "right" }}>
-            <button onClick={() => setFormShow({ ...formShow, manufacturers: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
+            <button onClick={() => setFormShow({ manufacturers: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
           </div>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th style={{ width: 10 }}>Filter</th>
-                <th>Brands</th>
-                <th style={{ width: 10 }}>Edit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {manufacturers.map(manufacturer => {
-                return (
-                  <tr key={manufacturer.id}>
-                    <td><input className="form-check-input" type="checkbox" value={manufacturer.id} onChange={handleSelectManufacturer} /></td>
-                    <td>{manufacturer.name}</td>
-                    <td>button</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th style={{ width: 10 }}>fil.</th>
+                  <th>Brands</th>
+                  <th style={{ width: 10 }}>edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {manufacturers.map(manufacturer => {
+                  return (
+                    <tr key={manufacturer.id}>
+                      <td><input className="form-check-input" type="checkbox" value={manufacturer.id} onChange={handleSelectManufacturer} /></td>
+                      <td>{manufacturer.name}</td>
+                      <td align="center">
+                        <img onClick={() => { setManuUpdating(manufacturer) }} src="/pencil-square.svg" alt="edit" style={{ cursor: 'pointer' }} />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
         <div className="col-5">
           <h4 align="center">Models</h4>
           <div style={{ textAlign: "right" }}>
-            <button onClick={() => setFormShow({ ...formShow, models: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
+            <button onClick={() => setFormShow({ models: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
           </div>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th style={{ width: 10 }}>Filter</th>
-                <th>Manufacturer</th>
-                <th>Model</th>
-                <th>Image</th>
-                <th style={{ width: 10 }}>Edit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {f_models.map(model => {
-                return (
-                  <tr key={model.id}>
-                    <td><input className="form-check-input" type="checkbox" value={model.id} onChange={handleSelectModel} /></td>
-                    <td>{model.manufacturer.name}</td>
-                    <td>{model.name}</td>
-                    <td><img src={model.picture_url} alt={model.name} width="150" /></td>
-                    <td>button</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th style={{ width: 10 }}>fil.</th>
+                  <th>Manufacturer</th>
+                  <th>Model Name</th>
+                  <th>Image</th>
+                  <th style={{ width: 10 }}>edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {f_models.map(model => {
+                  return (
+                    <tr key={model.id}>
+                      <td><input className="form-check-input" type="checkbox" value={model.id} checked={modelIsChecked[model.id]} onChange={handleSelectModel} /></td>
+                      <td>{model.manufacturer.name}</td>
+                      <td>{model.name}</td>
+                      <td><img src={model.picture_url} alt={model.name} width="150" /></td>
+                      <td align="center">
+                        <img onClick={() => { setModelUpdating(model) }} src="/pencil-square.svg" alt="edit" style={{ cursor: 'pointer' }} />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
         <div className="col-5">
           <h4 align="center">Cars</h4>
           <div style={{ textAlign: "right" }}>
-            <button onClick={() => setFormShow({ ...formShow, automobiles: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
+            <button onClick={() => setFormShow({ automobiles: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
           </div>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Manufacturer</th>
-                <th>Model</th>
-                <th>Color</th>
-                <th>Year</th>
-                <th>VIN</th>
-                <th style={{ width: 10 }}>Edit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {f_automobiles.map(car => {
-                return (
-                  <tr key={car.id}>
-                    <td>{car.model.manufacturer.name}</td>
-                    <td>{car.model.name}</td>
-                    <td>{car.color}</td>
-                    <td>{car.year}</td>
-                    <td>{car.vin}</td>
-                    <td>button</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="table-responsive">
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Manufacturer</th>
+                  <th>Model</th>
+                  <th>Color</th>
+                  <th>Year</th>
+                  <th>VIN</th>
+                  <th style={{ width: 10 }}>edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {f_automobiles.map(car => {
+                  return (
+                    <tr key={car.id}>
+                      <td>{car.model.manufacturer.name}</td>
+                      <td>{car.model.name}</td>
+                      <td>{car.color}</td>
+                      <td>{car.year}</td>
+                      <td>{car.vin}</td>
+                      <td align="center">
+                        <img onClick={() => { setCarUpdating(car) }} src="/pencil-square.svg" alt="edit" style={{ cursor: 'pointer' }} />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <ManufacturerForm
         show={formShow.manufacturers}
-        onHide={() => setFormShow({ ...formShow, manufacturers: false })}
+        onHide={() => {
+          setFormShow({ manufacturers: false })
+          setManuUpdating(false)
+        }}
+        updating={manuUpdating}
       />
       <ModelForm
         show={formShow.models}
-        onHide={() => setFormShow({ ...formShow, models: false })}
+        onHide={() => {
+          setFormShow({ models: false })
+          setModelUpdating(false)
+        }}
+        updating={modelUpdating}
       />
       <CarForm
         show={formShow.automobiles}
-        onHide={() => setFormShow({ ...formShow, automobiles: false })}
+        onHide={() => {
+          setFormShow({ automobiles: false })
+          setCarUpdating(false)
+        }}
+        updating={carUpdating}
       />
-    </div>
+    </>
   )
 }

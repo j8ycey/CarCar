@@ -7,6 +7,9 @@ class Manufacturer(models.Model):
 
     def get_api_url(self):
         return reverse("api_manufacturer", kwargs={"pk": self.id})
+
+    def __str__(self):
+        return self.name
     
     def __str__(self):
         return self.name
