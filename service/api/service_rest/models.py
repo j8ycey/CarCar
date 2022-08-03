@@ -16,7 +16,7 @@ class AutomobileVO(models.Model):
 
 class Technician(models.Model):
     name = models.CharField(max_length=100)
-    employee_id = models.PositiveSmallIntegerField()
+    employee_id = models.PositiveSmallIntegerField(unique=True)
     def __str__(self):
         return self.name + " - " + str(self.employee_id)
     def get_api_url(self):
