@@ -20,10 +20,24 @@ async function handleChange(event) {
   setSearch(event.target.value)
 }
 
+async function deleteAppointment(id) {
+  const response = await fetch(`http://localhost:8080/api/appointments/${id}`, {
+    method: 'DELETE'
+  })
+  if (response.ok) {
+    const data = await response.json()
+    console.log(data)
+    const updatedAppointments = [...allAppointments].filter(appointment => appointment.id !== id)
+    setAllAppointments(updatedAppointments)
+  }
+}
+
+useEffect(() => {
+  setFilteredAppointments(allAppointments)}, [allAppointments])
+
 useEffect(() => {
   const filteredAppointments = allAppointments.filter(appointment => appointment.vin.toLowerCase().includes(search.toLowerCase()))
-  setFilteredAppointments(filteredAppointments)
-}, [search])
+  setFilteredAppointments(filteredAppointments)}, [search])
 
   return (
     <>
@@ -51,6 +65,7 @@ useEffect(() => {
               <th>Service Reason</th>
               <th>VIP</th>
               <th>Status</th>
+              <th>Cancel</th>
             </tr>
           </thead>
 
@@ -64,6 +79,7 @@ useEffect(() => {
                 <td>{appointment.reason}</td>
                 <td>{appointment.vip ? "Yes" : "No"}</td>
                 <td>{appointment.completed ? "Finished" : "Pending"}</td>
+                <td><button className="btn btn-danger" onClick={() => deleteAppointment(appointment.id)}>Cancel</button></td>
               </tr>
             ))}
           </tbody>

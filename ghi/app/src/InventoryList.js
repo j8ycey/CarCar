@@ -350,9 +350,9 @@ export default function InventoryList(props) {
 
   return (
     <>
-      <div className="row mt-5">
+      <div className="row mt-5 shadow-lg mb-3 pt-4 px-3">
+        <h1 align="center">Inventory</h1>
         <div className="col-2">
-          <h4 align="center">Manufacturers</h4>
           <div style={{ textAlign: "right" }}>
             <button onClick={() => setFormShow({ manufacturers: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
           </div>
@@ -360,9 +360,9 @@ export default function InventoryList(props) {
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th style={{ width: 10 }}>fil.</th>
-                  <th>Brands</th>
-                  <th style={{ width: 10 }}>edit</th>
+                  <th style={{ width: 10 }}></th>
+                  <th>Manufacturers</th>
+                  <th style={{ width: 10 }}></th>
                 </tr>
               </thead>
               <tbody>
@@ -382,7 +382,6 @@ export default function InventoryList(props) {
           </div>
         </div>
         <div className="col-5">
-          <h4 align="center">Models</h4>
           <div style={{ textAlign: "right" }}>
             <button onClick={() => setFormShow({ models: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
           </div>
@@ -390,11 +389,11 @@ export default function InventoryList(props) {
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th style={{ width: 10 }}>fil.</th>
+                  <th style={{ width: 10 }}></th>
                   <th>Manufacturer</th>
-                  <th>Model Name</th>
+                  <th>Model</th>
                   <th>Image</th>
-                  <th style={{ width: 10 }}>edit</th>
+                  <th style={{ width: 10 }}></th>
                 </tr>
               </thead>
               <tbody>
@@ -416,7 +415,6 @@ export default function InventoryList(props) {
           </div>
         </div>
         <div className="col-5">
-          <h4 align="center">Cars</h4>
           <div style={{ textAlign: "right" }}>
             <button onClick={() => setFormShow({ automobiles: true })} className="btn btn-primary btn-sm" style={{ marginRight: 15 }}>Add New</button>
           </div>
@@ -429,7 +427,7 @@ export default function InventoryList(props) {
                   <th>Color</th>
                   <th>Year</th>
                   <th>VIN</th>
-                  <th style={{ width: 10 }}>edit</th>
+                  <th style={{ width: 10 }}></th>
                 </tr>
               </thead>
               <tbody>
