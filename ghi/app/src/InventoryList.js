@@ -124,11 +124,19 @@ export default function InventoryList(props) {
   }
 
   function CarForm(props) {
+    let initial = []
+    if (!!props.updating) {
+      initial = [...models].filter(model => model.manufacturer.id === props.updating.model.manufacturer.id)
+    } else {
+      initial = []
+    }
+    const [firstRun, setFirstRun] = useState(true)
     const [carFormModels, setCarFormModels] = useState([])
 
     function handleCarFormManufacturer(event) {
       const filteredModels = [...models].filter(model => model.manufacturer.id === parseInt(event.target.value))
       setCarFormModels(filteredModels)
+      setFirstRun(false)
     }
 
     return (
@@ -141,14 +149,15 @@ export default function InventoryList(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Add New Car
+            {!!props.updating ? "Update " : "Add New "} Car
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form id="carForm" onSubmit={handleSubmit}>
             <input type="hidden" name="type" value="automobiles" />
+            <input type="hidden" name="edit" value={props.updating.vin} />
             <div className="mb-2">
-              <select required className="form-select" name="manufacturer_id" onChange={handleCarFormManufacturer}>
+              <select required className="form-select" name="manufacturer_id" onChange={handleCarFormManufacturer} defaultValue={!!props.updating ? props.updating.model.manufacturer.id : ""}>
                 <option value="">Choose a manufacturer</option>
                 {manufacturers.map(manufacturer => {
                   return <option key={manufacturer.id} value={manufacturer.id}>{manufacturer.name}</option>
@@ -156,29 +165,30 @@ export default function InventoryList(props) {
               </select>
             </div>
             <div className="mb-2">
-              <select required className="form-select" name="model_id">
+              <select required className="form-select" name="model_id" defaultValue={!!props.updating ? props.updating.model.id : ""}>
                 <option value="">Choose a model</option>
-                {carFormModels.map(model => {
+                {(firstRun ? initial : carFormModels).map(model => {
                   return <option key={model.id} value={model.id}>{model.name}</option>
                 })}
               </select>
             </div>
             <div className="form-floating mb-2">
-              <input type="text" className="form-control" name="color" placeholder="Color" />
+              <input type="text" className="form-control" name="color" placeholder="Color" defaultValue={!!props.updating ? props.updating.color : ""} />
               <label htmlFor="color">Color</label>
             </div>
             <div className="form-floating mb-2">
-              <input type="number" className="form-control" name="year" placeholder="Year" min="1900" max="2100" />
+              <input type="number" className="form-control" name="year" placeholder="Year" min="1900" max="2100" defaultValue={!!props.updating ? props.updating.year : ""} />
               <label htmlFor="year">Year</label>
             </div>
             <div className="form-floating mb-2">
-              <input type="text" className="form-control" name="vin" placeholder="VIN no." />
+              <input type="text" className="form-control" name="vin" placeholder="VIN no." defaultValue={!!props.updating ? props.updating.vin : ""} />
               <label htmlFor="vin">VIN no.</label>
             </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <button form="carForm" className="btn btn-primary">Create</button>
+          <button form="carForm" onClick={() => {handleDelete("automobiles", props.updating.vin)}} className={"btn btn-danger" + (!!props.updating ? "" : " d-none")}>Delete</button>
+          <button form="carForm" className="btn btn-primary">{!!props.updating ? "Update" : "Create"}</button>
         </Modal.Footer>
       </Modal>
     );
@@ -221,9 +231,9 @@ export default function InventoryList(props) {
     const response = await fetch(url, fetchConfig)
     if (response.ok) {
       setFormShow({ [type]: false })
-      setManuUpdating({})
-      setModelUpdating({})
-      setCarUpdating({})
+      setManuUpdating(false)
+      setModelUpdating(false)
+      setCarUpdating(false)
 
       if (type === "manufacturers") {
         requestManufacturers()
@@ -243,9 +253,10 @@ export default function InventoryList(props) {
     const response = await fetch(url, fetchConfig)
     if (response.ok) {
       setFormShow({ [type]: false })
-      setManuUpdating({})
-      setModelUpdating({})
-      setCarUpdating({})
+      setManuUpdating(false)
+      setModelUpdating(false)
+      setCarUpdating(false)
+      console.log(response)
 
       if (type === "manufacturers") {
         requestManufacturers()
@@ -442,17 +453,26 @@ export default function InventoryList(props) {
       </div>
       <ManufacturerForm
         show={formShow.manufacturers}
-        onHide={() => setFormShow({ manufacturers: false })}
+        onHide={() => {
+          setFormShow({ manufacturers: false })
+          setManuUpdating(false)
+        }}
         updating={manuUpdating}
       />
       <ModelForm
         show={formShow.models}
-        onHide={() => setFormShow({ models: false })}
+        onHide={() => {
+          setFormShow({ models: false })
+          setModelUpdating(false)
+        }}
         updating={modelUpdating}
       />
       <CarForm
         show={formShow.automobiles}
-        onHide={() => setFormShow({ automobiles: false })}
+        onHide={() => {
+          setFormShow({ automobiles: false })
+          setCarUpdating(false)
+        }}
         updating={carUpdating}
       />
     </>
