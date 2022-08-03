@@ -71,7 +71,7 @@ export default function InventoryList(props) {
           <button form="manufacturerForm" className="btn btn-primary">Create</button>
         </Modal.Footer>
       </Modal>
-    );
+    )
   }
 
   function ModelForm(props) {

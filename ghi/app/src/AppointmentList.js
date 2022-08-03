@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react'
-// import { useNavigate } from 'react-router-dom'
-// import { Modal } from 'react-bootstrap'
+import React, { useState, useEffect} from 'react'
 
 export default function AppointmentList(props) {
-const [appointments, setAppointments] = useState([]);
-const [allAppointments, setAllAppointments] = useState([]); 
-const navigate = useNavigate()
+const [filteredAppointments, setFilteredAppointments] = useState([])
+const [allAppointments, setAllAppointments] = useState([])
 
 async function requestAppointments() {
   const response = await fetch('http://localhost:8080/api/appointments/')
   if (response.ok) {
     const data = await response.json()
-    setAppointments(data.appointments)
+    setFilteredAppointments(data.appointments)
     setAllAppointments(data.appointments)
   }
 }
@@ -21,37 +18,8 @@ useEffect(() => {requestAppointments()}, [])
 async function handleChange(event) {
   const search = event.target.value
   const filteredAppointments = allAppointments.filter(appointment => appointment.vin.toLowerCase().includes(search.toLowerCase()))
-  setAppointments(filteredAppointments)
+  setFilteredAppointments(filteredAppointments)
 }
-
-async function handleSubmit(event) {
-  event.preventDefault()
-  const data = [...appointments]
-  console.log(data)
-
-  const url = 'http://localhost:8080/api/appointments/'
-  const fetchConfig = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-  }
-  const response = await fetch(url, fetchConfig)
-  if (response.ok) {
-    const newAppointment = await response.json()
-    console.log(newAppointment)
-    // navigate('/appointment')
-    // const cleared = {
-    //     vin: '',
-    //     customer: '',
-    //     appointment_time: '',
-    //     reason: '',
-    //     status: '',
-    //     technician: '',
-    // }
-  }
-}
-
 
   return (
     <>
@@ -79,11 +47,11 @@ async function handleSubmit(event) {
           </thead>
 
           <tbody>
-            {appointments.map(appointment => (
+            {filteredAppointments.map(appointment => (
               <tr key={appointment.id}>
                 <td>{appointment.vin}</td>
                 <td>{appointment.customer}</td>
-                <td>{appointment.appointment_time}</td>
+                <td>{new Date(appointment.appointment_time).toLocaleString()}</td>
                 <td>{appointment.technician.name}</td>
                 <td>{appointment.reason}</td>
                 <td>{appointment.vip ? "Yes" : "No"}</td>
