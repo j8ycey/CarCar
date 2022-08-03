@@ -13,9 +13,9 @@ export default function InventoryList(props) {
   const [modelIsChecked, setModelIsChecked] = useState({})
 
   const [formShow, setFormShow] = useState({})
-  const [manuUpdating, setManuUpdating] = useState({})
-  const [modelUpdating, setModelUpdating] = useState({})
-  const [carUpdating, setCarUpdating] = useState({})
+  const [manuUpdating, setManuUpdating] = useState(false)
+  const [modelUpdating, setModelUpdating] = useState(false)
+  const [carUpdating, setCarUpdating] = useState(false)
 
   async function requestManufacturers() {
     const manuResponse = await fetch('http://localhost:8100/api/manufacturers/')
@@ -221,7 +221,9 @@ export default function InventoryList(props) {
     const response = await fetch(url, fetchConfig)
     if (response.ok) {
       setFormShow({ [type]: false })
-      setUpdating({ type: "", obj: "" })
+      setManuUpdating({})
+      setModelUpdating({})
+      setCarUpdating({})
 
       if (type === "manufacturers") {
         requestManufacturers()
@@ -241,7 +243,9 @@ export default function InventoryList(props) {
     const response = await fetch(url, fetchConfig)
     if (response.ok) {
       setFormShow({ [type]: false })
-      setUpdating({ type: "", obj: "" })
+      setManuUpdating({})
+      setModelUpdating({})
+      setCarUpdating({})
 
       if (type === "manufacturers") {
         requestManufacturers()
@@ -256,19 +260,19 @@ export default function InventoryList(props) {
   }
 
   useEffect(() => {
-    if (manuUpdating) {
+    if (!!manuUpdating) {
       setFormShow({ manufacturers: true })
     }
   }, [manuUpdating])
 
   useEffect(() => {
-    if (modelUpdating) {
+    if (!!modelUpdating) {
       setFormShow({ models: true })
     }
   }, [modelUpdating])
 
   useEffect(() => {
-    if (carUpdating) {
+    if (!!carUpdating) {
       setFormShow({ automobiles: true })
     }
   }, [carUpdating])
