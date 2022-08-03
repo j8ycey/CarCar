@@ -182,6 +182,7 @@ export default function InventoryList(props) {
             </div>
             <div className="form-floating mb-2">
               <input type="text" className="form-control" name="vin" placeholder="VIN no." defaultValue={!!props.updating ? props.updating.vin : ""} disabled={!!props.updating} />
+              <label htmlFor="vin">VIN no.</label>
             </div>
           </form>
         </Modal.Body>
@@ -233,6 +234,7 @@ export default function InventoryList(props) {
       setManuUpdating(false)
       setModelUpdating(false)
       setCarUpdating(false)
+      console.log("hello")
 
       if (type === "manufacturers") {
         requestManufacturers()
