@@ -181,8 +181,7 @@ export default function InventoryList(props) {
               <label htmlFor="year">Year</label>
             </div>
             <div className="form-floating mb-2">
-              <input type="text" className="form-control" name="vin" placeholder="VIN no." defaultValue={!!props.updating ? props.updating.vin : ""} />
-              <label htmlFor="vin">VIN no.</label>
+              <input type="text" className="form-control" name="vin" placeholder="VIN no." defaultValue={!!props.updating ? props.updating.vin : ""} disabled={!!props.updating} />
             </div>
           </form>
         </Modal.Body>
