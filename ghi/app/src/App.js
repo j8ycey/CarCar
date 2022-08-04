@@ -5,6 +5,7 @@ import InventoryList from './InventoryList';
 import AppointmentList from './AppointmentList';
 import AppointmentForm from './AppointmentForm';
 import TechnicianForm from './TechnicianForm';
+import SalesInterface from './Sales';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/appointment" element={<AppointmentList />} />
           <Route path="/appointment/new" element={<AppointmentForm />} />
           <Route path="/technician/new" element={<TechnicianForm />} />
+          <Route path="/sales" element={<SalesInterface />} />
         </Routes>
       </div>
     </BrowserRouter>

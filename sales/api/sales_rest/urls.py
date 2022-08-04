@@ -1,9 +1,20 @@
-# from django.urls import path
-# from .views import list_create_appointments, list_create_technicians, cancel_appointments, list_vos
+from django.urls import path
+from .views import (
+    list_automobiles,
+    list_customers,
+    list_sales,
+    list_salesmen,
+    list_manufacturers,
+    list_models,
+    list_states,
+)
 
-# urlpatterns = [
-#     path("appointments/", list_create_appointments, name="list_create_appointments"),
-#     path("technicians/", list_create_technicians, name="list__create_technicians"),
-#     path("appointments/<int:pk>/", cancel_appointments, name="cancel_appointment"),
-#     path("automobiles/", list_vos, name="list_vos"),
-# ]
+urlpatterns = [
+    path("automobiles/", list_automobiles, name="list_automobiles"),
+    path("models/", list_models, name="list_models"),
+    path("manufacturers/", list_manufacturers, name="list_manufacturers"),
+    path("customers/", list_customers, name="list_customers"),
+    path("sales/", list_sales, name="list_sales"),
+    path("salesmen/", list_salesmen, name="list_salesmen"),
+    path("states/", list_states, name="list_states"),
+]
