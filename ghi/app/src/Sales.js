@@ -181,13 +181,15 @@ export default function SalesInterface(props) {
       event.target.salesman.value = ""
       event.target.customer.value = ""
       event.target.price.value = ""
-      
+
       requestSales()
       setSuccessfulForm("sale")
     }
   }
 
-  useEffect(() => {setShowSuccess(true)}, [successfulForm])
+  useEffect(() => {
+    if (successfulForm !== "") {setShowSuccess(true)}
+  }, [successfulForm])
 
   function Success(props) {
     return (
