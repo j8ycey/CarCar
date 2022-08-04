@@ -24,12 +24,6 @@ class Technician(models.Model):
     class Meta:
         ordering = ["name"]
 
-    def get_api_url(self):
-        return reverse("api_appointment", kwargs={"pk": self.id})
-    
-    def __str__(self):
-        return self.name + " - " + str(self.employee_id)
-
 
 class ServiceAppointment(models.Model):
     vin = models.CharField(max_length=17, unique=True)

@@ -6,7 +6,7 @@ from django.db import models
 class Salesman(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
-    employee_id = models.IntegerField()
+    employee_id = models.IntegerField(unique=True)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -15,17 +15,7 @@ class Salesman(models.Model):
 class Customer(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
-    address = models.ForeignKey(
-        "Address",
-        on_delete=models.PROTECT,
-    )
     phone = models.CharField(max_length=12)
-
-    def __str__(self):
-        return self.first_name + " " + self.last_name
-
-
-class Address(models.Model):
     street = models.CharField(max_length=30)
     city = models.CharField(max_length=20)
     state = models.ForeignKey(
@@ -35,10 +25,7 @@ class Address(models.Model):
     zipcode = models.CharField(max_length=5)
 
     def __str__(self):
-        return self.city + ", " + self.state.abbreviation + " - " + self.street
-
-    class Meta:
-        ordering = ['state', 'city']
+        return self.first_name + " " + self.last_name
 
 
 class State(models.Model):
@@ -68,6 +55,7 @@ class Sale(models.Model):
         related_name="sales",
         on_delete=models.PROTECT,
     )
+    price = models.IntegerField()
 
     def __str__(self):
         return self.automobile.vin + " / salesman: " + str(self.salesman)
@@ -83,3 +71,18 @@ class AutomobileVO(models.Model):
 
     def __str__(self):
         return self.vin
+
+
+class ModelVO(models.Model):
+    name = models.CharField(max_length=100)
+    manufacturer = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.manufacturer + " " + self.name
+
+
+class ManufacturerVO(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name

@@ -1,3 +1,6 @@
+/* SORRY THIS COMPONENT IS SO BIG. I'LL BREAK THE MODALS AND LISTS UP INTO SMALLER COMPONENTS
+   IF I HAVE TIME. */
+
 import React, { useState, useEffect, useRef } from 'react'
 import { Modal } from 'react-bootstrap'
 
@@ -352,7 +355,7 @@ export default function InventoryList(props) {
     <>
       <div className="row mt-5 shadow-lg mb-3 pt-4 px-3">
         <h1 align="center">Inventory</h1>
-        <div className="col-2">
+        <div className="col-3">
           <div className="table-responsive">
             <table className="table">
               <thead>
@@ -380,7 +383,7 @@ export default function InventoryList(props) {
             </table>
           </div>
         </div>
-        <div className="col-5">
+        <div className="col-4">
           <div className="table-responsive">
             <table className="table">
               <thead>
@@ -401,7 +404,7 @@ export default function InventoryList(props) {
                       <td><input className="form-check-input" type="checkbox" value={model.id} checked={modelIsChecked[model.id]} onChange={handleSelectModel} /></td>
                       <td>{model.manufacturer.name}</td>
                       <td>{model.name}</td>
-                      <td><img src={model.picture_url} alt={model.name} width="150" /></td>
+                      <td><img src={model.picture_url} alt={model.name} width="100" /></td>
                       <td align="center">
                         <img onClick={() => { setModelUpdating(model) }} src="/pencil-square.svg" alt="edit" style={{ cursor: 'pointer' }} />
                       </td>

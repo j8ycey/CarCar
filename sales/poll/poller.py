@@ -11,7 +11,7 @@ django.setup()
 
 # Import models from sales_rest, here.
 # from sales_rest.models import Something
-from sales_rest.models import AutomobileVO
+from sales_rest.models import AutomobileVO, ModelVO, ManufacturerVO
 
 def get_automobiles():
     url = "http://inventory-api:8000/api/automobiles/"
@@ -27,11 +27,32 @@ def get_automobiles():
             color=car["color"],
         )
 
+def get_models():
+    url = "http://inventory-api:8000/api/models/"
+    response = requests.get(url)
+    content = json.loads(response.content)
+    for model in content["models"]:
+        ModelVO.objects.update_or_create(
+            name=model["name"],
+            manufacturer=model["manufacturer"]["name"],
+        )
+
+def get_manufacturers():
+    url = "http://inventory-api:8000/api/manufacturers/"
+    response = requests.get(url)
+    content = json.loads(response.content)
+    for manufacturer in content["manufacturers"]:
+        ManufacturerVO.objects.update_or_create(
+            name=manufacturer["name"]
+        )
+
 def poll():
     while True:
         print('Sales poller polling for data')
         try:
             get_automobiles()
+            get_models()
+            get_manufacturers()
         except Exception as e:
             print(e, file=sys.stderr)
         time.sleep(60)
