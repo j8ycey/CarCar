@@ -29,6 +29,7 @@ DEBUG = True
 INSTALLED_APPS = [
     'corsheaders',
     'sales_rest',
+    'phonenumber_field',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

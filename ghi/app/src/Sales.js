@@ -223,11 +223,13 @@ export default function Sales(props) {
                 <input
                   required
                   name='phone'
-                  type="text"
+                  type="tel"
+                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                   className="form-control"
-                  placeholder="Phone #"
+                  placeholder="Phone (###-###-####)"
+                  size="12"
                 />
-                <label htmlFor="phone" className="form-floating-label">Phone #</label>
+                <label htmlFor="phone" className="form-floating-label">{"Phone (###-###-####)"}</label>
               </div>
               <div className="form-floating mb-2">
                 <input
@@ -252,7 +254,7 @@ export default function Sales(props) {
               <div className="row">
                 <div className="col-sm">
                   <div className="form-floating mb-2">
-                    <select required name="state" className="form-control">
+                    <select name="state" className="form-control">
                       <option value="">Select State</option>
                       {USStates.map(state => (
                         <option key={state.abbreviation} value={state.abbreviation}>
