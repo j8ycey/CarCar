@@ -1,11 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainPage from './MainPage';
 import Nav from './Nav';
-import InventoryList from './InventoryList';
-import AppointmentList from './AppointmentList';
-import AppointmentForm from './AppointmentForm';
-import TechnicianForm from './TechnicianForm';
-import SalesInterface from './Sales';
+import Inventory from './Inventory';
+import Appointments from './Appointments';
+import Employees from './Employees';
+import Sales from './Sales';
 
 function App() {
   return (
@@ -14,11 +13,10 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/inventory" element={<InventoryList />} />
-          <Route path="/appointment" element={<AppointmentList />} />
-          <Route path="/appointment/new" element={<AppointmentForm />} />
-          <Route path="/technician/new" element={<TechnicianForm />} />
-          <Route path="/sales" element={<SalesInterface />} />
+          <Route path="/inventory" element={<Inventory />} />
+          <Route path="/appointment" element={<Appointments />} />
+          <Route path="/employees" element={<Employees />} />
+          <Route path="/sales" element={<Sales />} />
         </Routes>
       </div>
     </BrowserRouter>

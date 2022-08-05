@@ -26,7 +26,7 @@ class Technician(models.Model):
 
 
 class ServiceAppointment(models.Model):
-    vin = models.CharField(max_length=17, unique=True)
+    vin = models.CharField(max_length=17)
     customer = models.CharField(max_length=100)
     vip = models.BooleanField(default=False)
     appointment_time = models.DateTimeField()
@@ -43,3 +43,6 @@ class ServiceAppointment(models.Model):
 
     def __str__(self):
         return self.vin + " - " + self.customer + " - " + self.reason
+
+    class Meta:
+        ordering = ["appointment_time"]

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Modal } from 'react-bootstrap'
+import { Alert } from 'react-bootstrap'
 
-export default function SalesInterface(props) {
+export default function Sales(props) {
   // State variables for creating new sale
   const [salesmen, setSalesmen] = useState([])
   const [customers, setCustomers] = useState([])
@@ -16,9 +16,8 @@ export default function SalesInterface(props) {
   // State variables for creating new customer
   const [USStates, setUSStates] = useState([])
 
-  // State varaibles for showing success message on form submits
-  const [showSuccess, setShowSuccess] = useState(false)
-  const [successfulForm, setSuccessfulForm] = useState("")
+  // State varaibles for showAlerting success message on form submits
+  const [showAlert, setShowAlert] = useState(false);
 
   // State variables for sales history
   const [allSales, setAllSales] = useState([])
@@ -153,7 +152,7 @@ export default function SalesInterface(props) {
       event.target.state.value = ""
       event.target.zipcode.value = ""
 
-      setSuccessfulForm("customer")
+      setShowAlert(true)
     }
   }
 
@@ -181,42 +180,19 @@ export default function SalesInterface(props) {
       event.target.salesman.value = ""
       event.target.customer.value = ""
       event.target.price.value = ""
-      
+
       requestSales()
-      setSuccessfulForm("sale")
+      setShowAlert(true)
     }
-  }
-
-  useEffect(() => {setShowSuccess(true)}, [successfulForm])
-
-  function Success(props) {
-    return (
-      <Modal
-        {...props}
-        size="md"
-        aria-labelledby="contained-modal-title-vcenter"
-        backdrop="static"
-        centered
-      >
-        <Modal.Header>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Success!
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h4>{props.form === "sale" ? "Sale made" : "New customer added"}</h4>
-        </Modal.Body>
-        <Modal.Footer>
-          <button className="btn btn-primary" onClick={props.onHide}>Close</button>
-        </Modal.Footer>
-      </Modal>
-    );
   }
 
   return (
     <>
-      <div className="row">
-        <div className="row mt-5">
+      <div className="row shadow my-5 justify-content-center">
+        <div className="row py-4">
+          <Alert key='success' variant='success' className={showAlert ? "" : "d-none"} onClick={() => setShowAlert(false)} dismissible>
+            Successfully Created!
+          </Alert>
 
           {/* NEW CUSTOMER FORM */}
 
@@ -377,57 +353,52 @@ export default function SalesInterface(props) {
                 <label htmlFor="price" className="form-floating-label">Sale Price</label>
               </div>
               <div className='text-center'>
-                <button type="submit" className="btn btn-primary">Make Sale</button>
+                <button type="submit" className="btn btn-primary">Create Sale</button>
               </div>
             </form>
           </div>
+        </div>
 
-          {/* SALES HISTORY LIST */}
+        {/* SALES HISTORY LIST */}
 
-          <div className="row mt-2">
-            <div className="shadow p-4 mt-4">
-              <div className="mb-3">
-                <h1 align="center">Sales History</h1>
-                <select className="form-control" onChange={selectSalesman}>
-                  <option value="">Filter by salesman</option>
-                  {salesmen.map(salesman => (
-                    <option key={salesman.employee_id} value={salesman.employee_id}>
-                      {salesman.first_name + " " + salesman.last_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Salesman</th>
-                    <th>Customer</th>
-                    <th>Vehicle VIN</th>
-                    <th>Sale Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {salesmanSales.map(sale => (
-                    <tr key={sale.id}>
-                      <td>{sale.salesman.first_name + " " + sale.salesman.last_name}</td>
-                      <td>{sale.customer.first_name + " " + sale.customer.last_name}</td>
-                      <td>{sale.automobile.vin}</td>
-                      <td>{"$" + sale.price + ".00"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+        <div className="row mt-2">
+          <div className="p-4 mt-4">
+            <div className="mb-3">
+              <h1 align="center">Sales Records</h1>
+              <select className="form-control" onChange={selectSalesman}>
+                <option value="">Select Salesman</option>
+                {salesmen.map(salesman => (
+                  <option key={salesman.employee_id} value={salesman.employee_id}>
+                    {salesman.first_name + " " + salesman.last_name}
+                  </option>
+                ))}
+              </select>
             </div>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Employee ID</th>
+                  <th>Salesman</th>
+                  <th>Customer</th>
+                  <th>Vehicle VIN</th>
+                  <th>Sale Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {salesmanSales.map(sale => (
+                  <tr key={sale.id}>
+                    <td>{sale.salesman.employee_id}</td>
+                    <td>{sale.salesman.first_name + " " + sale.salesman.last_name}</td>
+                    <td>{sale.customer.first_name + " " + sale.customer.last_name}</td>
+                    <td>{sale.automobile.vin}</td>
+                    <td>{"$" + sale.price + ".00"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-      <Success
-        show={showSuccess}
-        onHide={() => {
-          setShowSuccess(false)
-        }}
-        form={successfulForm}
-      />
     </>
   )
 }
