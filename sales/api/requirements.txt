@@ -22,3 +22,9 @@ tomli==2.0.1
 urllib3==1.26.9
 whitenoise==5.3.0
 django-phonenumber-field==6.3.0
+cffi==1.15.1
+cryptography==37.0.4
+phonenumberslite==8.12.53
+pycparser==2.21
+PyJWT==2.4.0
+typing_extensions==4.3.0
