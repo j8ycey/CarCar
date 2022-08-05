@@ -158,6 +158,7 @@ export default function Sales(props) {
       event.target.state.value = ""
       event.target.zipcode.value = ""
 
+      requestCustomers()
       setShowAlert(true)
     }
   }

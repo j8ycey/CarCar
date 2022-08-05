@@ -44,14 +44,6 @@ class SalesmanEncoder(ModelEncoder):
     ]
 
 
-class StateEncoder(ModelEncoder):
-    model = State
-    properties = [
-        "abbreviation",
-        "name",
-    ]
-
-
 class CustomerEncoder(ModelEncoder):
     model = Customer
     properties = [
@@ -64,9 +56,6 @@ class CustomerEncoder(ModelEncoder):
         "state",
         "zipcode",
     ]
-    encoders = {
-        "state": StateEncoder()
-    }
 
 
 class SaleEncoder(ModelEncoder):
@@ -115,16 +104,6 @@ def list_manufacturers(request):
     )
 
 
-@require_http_methods(["GET"])
-def list_states(request):
-    states = State.objects.all()
-    return JsonResponse(
-        {"states": states},
-        encoder=StateEncoder,
-        safe=False,
-    )
-
-
 @require_http_methods(["GET", "POST"])
 def list_salesmen(request):
     if request.method == "GET":
@@ -155,8 +134,6 @@ def list_customers(request):
         )
     elif request.method == "POST":
         data = json.loads(request.body)
-        state = State.objects.get(abbreviation=data["state"])
-        data["state"] = state
         customer = Customer.objects.create(**data)
         return JsonResponse(
             {"customer": customer},

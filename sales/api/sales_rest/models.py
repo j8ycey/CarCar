@@ -19,27 +19,11 @@ class Customer(models.Model):
     phone = PhoneNumberField()
     street = models.CharField(max_length=30)
     city = models.CharField(max_length=20)
-    state = models.ForeignKey(
-        "State",
-        null=True,
-        blank=True,
-        on_delete=models.CASCADE,
-    )
+    state = models.CharField(max_length=2)
     zipcode = models.CharField(max_length=5)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
-
-
-class State(models.Model):
-    abbreviation = models.CharField(max_length=2)
-    name = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.abbreviation + " - " + self.name
-
-    class Meta:
-        ordering = ['name']
 
 
 class Sale(models.Model):

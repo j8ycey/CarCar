@@ -4,7 +4,6 @@ from .models import *
 
 admin.site.register(Salesman)
 admin.site.register(Customer)
-admin.site.register(State)
 admin.site.register(Sale)
 admin.site.register(AutomobileVO)
 admin.site.register(ModelVO)

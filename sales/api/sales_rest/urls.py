@@ -6,7 +6,6 @@ from .views import (
     list_salesmen,
     list_manufacturers,
     list_models,
-    list_states,
 )
 
 urlpatterns = [
@@ -16,5 +15,4 @@ urlpatterns = [
     path("customers/", list_customers, name="list_customers"),
     path("sales/", list_sales, name="list_sales"),
     path("salesmen/", list_salesmen, name="list_salesmen"),
-    path("states/", list_states, name="list_states"),
 ]
