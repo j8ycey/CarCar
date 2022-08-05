@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Modal } from 'react-bootstrap'
 
-export default function InventoryList(props) {
+export default function Inventory(props) {
   const [manufacturers, setManufactures] = useState([])
   const [models, setModels] = useState([])
   const [automobiles, setAutomobiles] = useState([])
