@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Alert } from 'react-bootstrap'
 
 export default function Sales(props) {
@@ -13,8 +13,22 @@ export default function Sales(props) {
   const [manufacturers, setManufacturers] = useState([])
   const [selectedManu, setSelectedManu] = useState("")
 
-  // State variables for creating new customer
-  const [USStates, setUSStates] = useState([])
+  // List of US states for creating customer
+  const USStates = useRef([
+    {name: "Alabama", abb: "AL"}, {name: "Alaska", abb: "AK"}, {name: "Arizona", abb: "AZ"},
+    {name: "Arkansas", abb: "AR"}, {name: "California", abb: "CA"}, {name: "Colorado", abb: "CO"}, {name: "Connecticut", abb: "CT"},
+    {name: "Delaware", abb: "DE"}, {name: "District of Columbia", abb: "DC"}, {name: "Florida", abb: "FL"}, {name: "Georgia", abb: "GA"},
+    {name: "Hawaii", abb: "HI"}, {name: "Idaho", abb: "ID"}, {name: "Illinois", abb: "IL"}, {name: "Indiana", abb: "IN"},
+    {name: "Iowa", abb: "IA"}, {name: "Kansas", abb: "KS"},  {name: "Kentucky", abb: "KY"}, {name: "Louisiana", abb: "LA"},
+    {name: "Maine", abb: "ME"}, {name: "Montana", abb: "MT"}, {name: "Nebraska", abb: "NE"}, {name: "Nevada", abb: "NV"},
+    {name: "New Hampshire", abb: "NH"}, {name: "New Jersey", abb: "NJ"}, {name: "New Mexico", abb: "NM"}, {name: "New York", abb: "NY"},
+    {name: "North Carolina", abb: "NC"}, {name: "North Dakota", abb: "ND"}, {name: "Ohio", abb: "OH"}, {name: "Oklahoma", abb: "OK"},
+    {name: "Oregon", abb: "OR"}, {name: "Maryland", abb: "MD"}, {name: "Massachusetts", abb: "MA"}, {name: "Michigan", abb: "MI"},
+    {name: "Minnesota", abb: "MN"}, {name: "Mississippi", abb: "MS"}, {name: "Missouri", abb: "MO"}, {name: "Pennsylvania", abb: "PA"},
+    {name: "Rhode Island", abb: "RI"}, {name: "South Carolina", abb: "SC"}, {name: "South Dakota", abb: "SD"}, {name: "Tennessee", abb: "TN"},
+    {name: "Texas", abb: "TX"}, {name: "Utah", abb: "UT"}, {name: "Vermont", abb: "VT"}, {name: "Virginia", abb: "VA"},
+    {name: "Washington", abb: "WA"}, {name: "West Virginia", abb: "WV"}, {name: "Wisconsin", abb: "WI"}, {name: "Wyoming", abb: "WY"},
+  ])
 
   // State varaibles for showAlerting success message on form submits
   const [showAlert, setShowAlert] = useState(false);
@@ -67,13 +81,6 @@ export default function Sales(props) {
       setManufacturers(data.manufacturers)
     }
   }
-  async function requestStates() {
-    const response = await fetch('http://localhost:8090/api/states/')
-    if (response.ok) {
-      const data = await response.json()
-      setUSStates(data.states)
-    }
-  }
   useEffect(() => {
     requestSales()
     requestSalesmen()
@@ -81,7 +88,6 @@ export default function Sales(props) {
     requestAutomobiles()
     requestModels()
     requestManufacturers()
-    requestStates()
   }, [])
 
   function selectSalesman(event) {
@@ -108,7 +114,7 @@ export default function Sales(props) {
     setFilteredModels(m)
     setSelectedModel("")
   }
-  useEffect(filterDropdownModels, [selectedManu])
+  useEffect(filterDropdownModels, [selectedManu, models])
 
   function chooseModel(event) {
     setSelectedModel(event.target.value)
@@ -118,7 +124,7 @@ export default function Sales(props) {
     const autos = automobiles.filter(auto => auto.model === selectedModel)
     setFilteredAutos(autos)
   }
-  useEffect(filterDropdownAutos, [selectedModel])
+  useEffect(filterDropdownAutos, [selectedModel, automobiles])
 
   async function handleCustomer(event) {
     event.preventDefault()
@@ -256,13 +262,13 @@ export default function Sales(props) {
                   <div className="form-floating mb-2">
                     <select name="state" className="form-control">
                       <option value="">Select State</option>
-                      {USStates.map(state => (
-                        <option key={state.abbreviation} value={state.abbreviation}>
+                      {USStates.current.map(state => (
+                        <option key={state.abb} value={state.abb}>
                           {state.name}
                         </option>
                       ))}
                     </select>
-                    <label htmlFor="state" className="form-floating-label">Not required for testing convenience</label>
+                    <label htmlFor="state" className="form-floating-label">State</label>
                   </div>
                 </div>
                 <div className="col-sm">

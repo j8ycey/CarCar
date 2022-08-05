@@ -234,9 +234,9 @@ export default function Inventory(props) {
     const response = await fetch(url, fetchConfig)
     if (response.ok) {
       setFormShow({ [type]: false })
-      setManuUpdating(false)
-      setModelUpdating(false)
-      setCarUpdating(false)
+      setManuUpdating('')
+      setModelUpdating('')
+      setCarUpdating('')
       console.log("hello")
 
       if (type === "manufacturers") {
@@ -257,9 +257,9 @@ export default function Inventory(props) {
     const response = await fetch(url, fetchConfig)
     if (response.ok) {
       setFormShow({ [type]: false })
-      setManuUpdating(false)
-      setModelUpdating(false)
-      setCarUpdating(false)
+      setManuUpdating('')
+      setModelUpdating('')
+      setCarUpdating('')
       console.log(response)
 
       if (type === "manufacturers") {
@@ -454,7 +454,7 @@ export default function Inventory(props) {
         show={formShow.manufacturers}
         onHide={() => {
           setFormShow({ manufacturers: false })
-          setManuUpdating(false)
+          setManuUpdating('')
         }}
         updating={manuUpdating}
       />
@@ -462,7 +462,7 @@ export default function Inventory(props) {
         show={formShow.models}
         onHide={() => {
           setFormShow({ models: false })
-          setModelUpdating(false)
+          setModelUpdating('')
         }}
         updating={modelUpdating}
       />
@@ -470,7 +470,7 @@ export default function Inventory(props) {
         show={formShow.automobiles}
         onHide={() => {
           setFormShow({ automobiles: false })
-          setCarUpdating(false)
+          setCarUpdating('')
         }}
         updating={carUpdating}
       />
