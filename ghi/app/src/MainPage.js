@@ -8,7 +8,8 @@ function MainPage() {
           management!
         </p>
       </div>
-      <img src="/cars.png" />
+      <img src="/cars.png" height="450" />
+      <div><small>Image courtesy of Dalle</small></div>
     </div>
   );
 }

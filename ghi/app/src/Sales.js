@@ -340,7 +340,7 @@ export default function Sales(props) {
                     </option>
                   ))}
                 </select>
-                <label htmlFor="vin" className="form-floating-label">Vehicle VIN</label>
+                <label htmlFor="vin" className="form-floating-label">VIN</label>
               </div>
               <div className="form-floating mb-2">
                 <input

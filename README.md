@@ -2,23 +2,39 @@
 
 Team:
 
-* Joyce Lum - Service
+* Joyce Lum - Services
 * Jonathan Yoo - Sales
 
 ## Design
+Using the concept of domain driven design, we first started thinking of what would be entities
+and value objects. In inventory, we had manufacturers, models and cars as the entities which were
+value objects in our services and sales apps. We thought about how certain models grouped together
+such as salespeople and technicians since they are both employee types so we combined them into the
+same category through an "Employees" tab in the nav bar. Although they technically live in different
+microservices and do not share a bounded context, it made sense for the creation forms to live together
+for the best user experience.
 
-## Inventory micrservice
-We decided to create an inventory list page which houses the list of manufacturers, models and cars with inventory on one page because they are all part of the same bounded context. 
+When drawing out a context map, it was easy to see that our sales and services apps pull data from the
+inventory app. This exercise also made it easy to see what the bounded contexts were.
 
-## Service microservice
+For the Service Apointment related forms, features and list, we decided to display them all on one page
+which is accessible through the "Appointments" tab since they all have the same bounded context.
 
-Explain your models and integration with the inventory
-microservice, here.
+On the Sales related portion of our project, we put together the add new customer form, create new sale form
+and the sales record list along with the drop down filter feature all live on the "Sales" page since it is
+all part of the same bounded context as well.
 
-## Sales microservice
+For our small scale project, we didn't really need to create aggregates because there are limited models
+unless you consider the manufacturer, model and car models in the inventory app to be the root aggregate
+of their corresponding vo models within our individual sales/services apps since we must change data from
+that "parent" model or root aggregate in order to change what's in the value object models.
 
-Explain your models and integration with the inventory
-microservice, here.
+In order to prevent bad data from entering our apps, we are using an anti-corruption layer. In our sales 
+poller when sending over the data from inventory to the sales app, we had to consider that we only wanted
+some fields from the entity model. We also reformatted it by converting all the foreign key objects to 
+string representations of their names because to we could filter our sales record list. FOr the service poller,
+we did something similar but instead we just whittled it down to one singular property field that was ported
+over because all we really needed was the VIN and nothing else to make our search by VIN bar work.
 
 ------------------------------------------------------------------------------------------------------------
 

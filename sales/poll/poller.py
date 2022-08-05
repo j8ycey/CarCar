@@ -48,11 +48,11 @@ def get_manufacturers():
 
 def poll():
     while True:
-        print('Sales poller polling for data')
         try:
             get_automobiles()
             get_models()
             get_manufacturers()
+            print('Sales poller finished polling for data')
         except Exception as e:
             print(e, file=sys.stderr)
         time.sleep(30)
