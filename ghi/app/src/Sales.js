@@ -262,7 +262,7 @@ export default function Sales(props) {
                         </option>
                       ))}
                     </select>
-                    <label htmlFor="state" className="form-floating-label">State</label>
+                    <label htmlFor="state" className="form-floating-label">Not required for testing convenience</label>
                   </div>
                 </div>
                 <div className="col-sm">
