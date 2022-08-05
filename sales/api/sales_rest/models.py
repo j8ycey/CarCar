@@ -1,5 +1,6 @@
 from operator import mod
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 # Create your models here.
@@ -15,11 +16,13 @@ class Salesman(models.Model):
 class Customer(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
-    phone = models.CharField(max_length=12)
+    phone = PhoneNumberField()
     street = models.CharField(max_length=30)
     city = models.CharField(max_length=20)
     state = models.ForeignKey(
         "State",
+        null=True,
+        blank=True,
         on_delete=models.CASCADE,
     )
     zipcode = models.CharField(max_length=5)
