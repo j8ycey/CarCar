@@ -75,7 +75,7 @@ export default function Inventory(props) {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <button form="manufacturerForm" onClick={() => {handleDelete("manufacturers", props.updating.id)}} className={"btn btn-danger" + (!!props.updating ? "" : " d-none")}>Delete</button>
+          <button onClick={() => {handleDelete("manufacturers", props.updating.id)}} className={"btn btn-danger" + (!!props.updating ? "" : " d-none")}>Delete</button>
           <button form="manufacturerForm" className="btn btn-primary">{!!props.updating ? "Update" : "Create"}</button>
         </Modal.Footer>
       </Modal>
@@ -119,7 +119,7 @@ export default function Inventory(props) {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <button form="modelForm" onClick={() => {handleDelete("models", props.updating.id)}} className={"btn btn-danger" + (!!props.updating ? "" : " d-none")}>Delete</button>
+          <button onClick={() => {handleDelete("models", props.updating.id)}} className={"btn btn-danger" + (!!props.updating ? "" : " d-none")}>Delete</button>
           <button form="modelForm" className="btn btn-primary">{!!props.updating ? "Update" : "Create"}</button>
         </Modal.Footer>
       </Modal>
@@ -190,7 +190,7 @@ export default function Inventory(props) {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <button form="carForm" onClick={() => {handleDelete("automobiles", props.updating.vin)}} className={"btn btn-danger" + (!!props.updating ? "" : " d-none")}>Delete</button>
+          <button onClick={() => {handleDelete("automobiles", props.updating.vin)}} className={"btn btn-danger" + (!!props.updating ? "" : " d-none")}>Delete</button>
           <button form="carForm" className="btn btn-primary">{!!props.updating ? "Update" : "Create"}</button>
         </Modal.Footer>
       </Modal>
